@@ -33,7 +33,7 @@ Esta aplicação é totalmente baseada na web, acessível através de qualquer n
 - **Versão 3.0 (21/03/2024)** 
   - Inserção de um temporizador para ambos os tipos de simulados, aumentando a autenticidade da experiência de teste.
 - **Versão 4.0 (22/03/2024)** 
-  - Implementação de feedback imediato após cada questão e revisão de desempenho no final do simulado, incluindo a distinção entre questões corretas e incorretas.
+  - Implementação de feedback das questões certas e erradas e revisão de desempenho no final do simulado.
 
 ## Licença
 
