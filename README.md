@@ -49,7 +49,7 @@ Esse é um trabalho em andamento. Sugestões de melhorias, correções de bugs e
 
 Desenvolvido por Fabrício Félix: 
 [LinkedIn](https://www.linkedin.com/in/fabriciocosta85/)
-[Email](fabricio85@gmail.com)
+[Email](mailto:fabricio85@gmail.com)
 
 ---
 
