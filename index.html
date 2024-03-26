@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -6,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIMULADO CLF-C02</title>
     <style>
-        /* Estilos existentes */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #000000;
@@ -114,8 +112,8 @@
             color: #5D3E8C;
             transform: scale(1.05);
         }
-        .next-question-btn, #confirmButton {
-            flex-basis: calc(50% - 10px);
+        .next-question-btn, #confirmButton, #restartQuizBtn {
+            flex-basis: calc(33.33% - 10px);
             margin: 5px;
             padding: 20px;
             background-color: #000;
@@ -125,7 +123,7 @@
             cursor: pointer;
             transition: background-color 0.3s, transform 0.2s;
         }
-        .next-question-btn:hover, #confirmButton:hover {
+        .next-question-btn:hover, #confirmButton:hover, #restartQuizBtn:hover {
             background-color: #F4D35E;
             color: #000;
         }
@@ -144,7 +142,7 @@
         .hidden { display: none; }
         .correct-answer { font-weight: bold; }
         @media (max-width: 500px) {
-            .option, .next-question-btn, #confirmButton {
+            .option, .next-question-btn, #confirmButton, #restartQuizBtn {
                 flex-basis: 100%;
             }
         }
@@ -161,65 +159,75 @@
             margin-top: 20px;
             text-align: left;
         }
+        .question-count {
+            display: block; 
+            font-size: 0.75em; 
+        }
+        .disclaimer {
+            font-size: 0.75em; 
+            margin-top: 20px; 
+            text-align: center; 
+            max-width: 600px; 
+            margin-left: auto; 
+            margin-right: auto; 
+        }
     </style>
 </head>
 <body>
-
-<div id="startScreen">
-    <div id="title">SIMULADO CLF-C02</div>
-    <div id="developer"><a href="https://www.linkedin.com/in/fabriciocosta85/" target="_blank" style="color: #F4D35E;">Developed by Fabrício Félix</a></div>
-    <p id="intro">Bem-vindo ao simulado para o exame AWS Cloud Practitioner (CLF-C02)! Aqui você poderá testar os seus conhecimentos sempre que quiser! Por favor, selecione o tipo de quiz que deseja realizar. </p>
-    <button class="start-button" onclick="startQuiz(35, 40)">SIMPLES</button>
-    <button class="start-button" onclick="startQuiz(65, 90)">COMPLETO</button>
-    <div id="randomQuestionsInfo">*Simples - 35 questões aleatórias, 40 minutos.</div>
-    <div id="randomQuestionsInfo">*Completo - 65 questões aleatórias, 90 minutos.</div>
-</div>
-
-<div id="quizContainer" class="hidden">
-    <div id="timer">Tempo restante: <span id="timeLeft"></span></div>
-    <div id="progressContainer">
-        <div id="progressBar"></div>
-    </div>
-    <div id="progressText" style="margin: 10px 0;"></div>
-    
-    <div class="question-container" id="questionText"></div>
-    <div class="options-container" id="optionsContainer">
-        <!-- Opções serão injetadas aqui -->
-    </div>
-    <div id="answerScreen" class="hidden">
-        <div class="answer-container" id="answerExplanation">
-            <p id="feedbackText"></p>
-            <p id="correctAnswerText" class="correct-answer"></p>
-        </div>
-        <div class="answer-btn-container">
-            <button class="next-question-btn" id="previousQuestionBtn" onclick="loadPreviousQuestion()"><<< Anterior</button>
-            <button class="next-question-btn" onclick="loadNextQuestion()">Próxima >>></button>
+    <div id="startScreen">
+        <div id="title">SIMULADO CLF-C02</div>
+        <div id="developer"><a href="https://www.linkedin.com/in/fabriciocosta85/" target="_blank" style="color: #F4D35E;">Developed by Fabrício Félix</a></div>
+        <p id="intro">Bem-vindo ao simulado para o exame AWS Cloud Practitioner (CLF-C02)! Aqui você poderá testar os seus conhecimentos sempre que quiser! Por favor, selecione o tipo de quiz que deseja realizar. </p>
+        <button class="start-button" onclick="startQuiz(35, 40)">SIMPLES<br><span class="question-count">35 questões</span></button>
+        <button class="start-button" onclick="startQuiz(65, 90)">COMPLETO<br><span class="question-count">65 questões</span></button>
+        <div class="disclaimer">
+            Nota: Este projeto de simulado é uma iniciativa independente e não tem afiliação, endosso ou qualquer relação oficial com a Amazon Web Services (AWS). Foi desenvolvido com o objetivo de fornecer recursos educacionais para indivíduos que estão se preparando para o exame AWS Cloud Practitioner (CLF-C02) e não deve ser considerado como substituto dos materiais oficiais de estudo fornecidos pela AWS.
         </div>
     </div>
-    <div id="developer"><a href="https://www.linkedin.com/in/fabriciocosta85/" target="_blank" style="color: #F4D35E;">Developed by Fabrício Félix</a></div>
-</div>
 
-<div id="finalScreen" class="hidden">
-    <div id="finalScore"></div>
-    <div id="finalMessage"></div>
-    <div>
-        <label for="questionReview">Conferir questões:</label>
-        <select id="questionReview" onchange="showQuestionReview(this.value)">
-            <option value="">Selecione uma opção</option>
-            <option value="incorrect">Questões incorretas</option>
-            <option value="correct">Questões corretas</option>
-        </select>
+    <div id="quizContainer" class="hidden">
+        <div id="timer">Tempo restante: <span id="timeLeft"></span></div>
+        <div id="progressContainer">
+            <div id="progressBar"></div>
+        </div>
+        <div id="progressText" style="margin: 10px 0;"></div>
+        
+        <div class="question-container" id="questionText"></div>
+        <div class="options-container" id="optionsContainer"></div>
+        <div id="answerScreen" class="hidden">
+            <div class="answer-container" id="answerExplanation">
+                <p id="feedbackText"></p>
+                <p id="correctAnswerText" class="correct-answer"></p>
+            </div>
+            <div class="answer-btn-container">
+                <button class="next-question-btn" id="previousQuestionBtn" onclick="loadPreviousQuestion()"><<< Anterior</button>
+                
+                <button class="next-question-btn" onclick="loadNextQuestion()">Próxima >>></button>
+            </div>
+        </div>
+        <div id="developer"><a href="https://www.linkedin.com/in/fabriciocosta85/" target="_blank" style="color: #F4D35E;">Developed by Fabrício Félix</a></div>
     </div>
-    <div id="questionDetails"></div>
-    <button id="restartButton" onclick="restartQuiz()">TENTAR DE NOVO</button>
-    <div id="developer"><a href="https://www.linkedin.com/in/fabriciocosta85/" target="_blank" style="color: #F4D35E;">Developed by Fabrício Félix</a></div>
-</div>
 
-<script>
-    let currentQuestionIndex = 0;
-    let correctAnswersCount = 0;
-    let questions = [
-    {
+    <div id="finalScreen" class="hidden">
+        <div id="finalScore"></div>
+        <div id="finalMessage"></div>
+        <div>
+            <label for="questionReview">Conferir questões:</label>
+            <select id="questionReview" onchange="showQuestionReview(this.value)">
+                <option value="">Selecione uma opção</option>
+                <option value="incorrect">Questões incorretas</option>
+                <option value="correct">Questões corretas</option>
+            </select>
+        </div>
+        <div id="questionDetails"></div>
+        <button id="restartButton" onclick="restartQuiz()">TENTAR DE NOVO</button>
+        <div id="developer"><a href="https://www.linkedin.com/in/fabriciocosta85/" target="_blank" style="color: #F4D35E;">Developed by Fabrício Félix</a></div>
+    </div>
+
+    <script>
+        let currentQuestionIndex = 0;
+        let correctAnswersCount = 0;
+        let questions = [{
    question: "1. Qual serviço AWS ajudará uma empresa a identificar o usuário que deletou uma instância Amazon EC2 ontem?",
    options: ["A. Amazon CloudWatch", "B. AWS Trusted Advisor", "C. AWS CloudTrail", "D. Amazon Inspector"],
    correctAnswer: "C. AWS CloudTrail",
@@ -1288,7 +1296,7 @@ question: "137. Qual plano de suporte da AWS inclui serviço de concierge, um ge
 options: [
 "A. Suporte Básico da AWS",
 "B. Suporte Empresarial da AWS",
-"C. Suporte Business da AWS",
+"C. Suporte Empresarial da AWS",
 "D. Suporte ao Desenvolvedor da AWS"
 ],
 correctAnswer: "B. Suporte Empresarial da AWS",
@@ -2692,157 +2700,157 @@ multiSelect: false
   explanation: "No modelo de responsabilidade compartilhada da AWS, enquanto a AWS gerencia a infraestrutura e o sistema operacional, o cliente é responsável por controlar o acesso aos dados armazenados no banco de dados.",
   multiSelect: false
 },
-    ];
-    let selectedOptions = [];
-    let currentQuizQuestions = [];
-    let timer;
-    let timeLeft;
-    let incorrectQuestions = [];
-    let correctQuestions = [];
+]; 
+        let selectedOptions = [];
+        let currentQuizQuestions = [];
+        let timer;
+        let timeLeft;
+        let incorrectQuestions = [];
+        let correctQuestions = [];
 
-    function shuffleArray(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-        return array;
-    }
-
-    function startQuiz(numberOfQuestions, duration) {
-        document.getElementById('startScreen').classList.add('hidden');
-        document.getElementById('quizContainer').classList.remove('hidden');
-        const shuffledQuestions = shuffleArray([...questions]);
-        currentQuizQuestions = shuffledQuestions.slice(0, numberOfQuestions);
-        timeLeft = duration * 60; // Convert minutes to seconds
-        loadQuestion(currentQuestionIndex);
-        startTimer();
-    }
-
-    function loadQuestion(questionIndex) {
-        const question = currentQuizQuestions[questionIndex];
-        selectedOptions = [];
-        document.getElementById('questionText').innerHTML = question.question;
-        const optionsContainer = document.getElementById('optionsContainer');
-        optionsContainer.innerHTML = '';
-        question.options.forEach((option, index) => {
-            const button = document.createElement('button');
-            button.classList.add('option');
-            button.innerHTML = option;
-            button.onclick = () => toggleOption(option);
-            optionsContainer.appendChild(button);
-        });
-        const confirmButton = document.createElement('button');
-        confirmButton.innerHTML = 'CONFIRMAR';
-        confirmButton.onclick = () => {
-            checkAnswer(question.correctAnswer, question.explanation);
-        };
-        confirmButton.classList.add('next-question-btn');
-        confirmButton.setAttribute('id', 'confirmButton');
-        optionsContainer.appendChild(confirmButton);
-        document.getElementById('answerScreen').classList.add('hidden');
-        document.getElementById('previousQuestionBtn').style.display = (questionIndex === 0) ? 'none' : 'inline-block';
-        updateProgress();
-    }
-
-    function toggleOption(option) {
-        const optionIndex = selectedOptions.indexOf(option);
-        if (optionIndex < 0) {
-            selectedOptions.push(option);
-        } else {
-            selectedOptions.splice(optionIndex, 1);
-        }
-        updateOptionButtons();
-        document.getElementById('confirmButton').style.display = selectedOptions.length > 0 ? 'block' : 'none';
-    }
-
-    function updateOptionButtons() {
-        document.querySelectorAll('.option').forEach(button => {
-            if (selectedOptions.includes(button.innerText)) {
-                button.classList.add('selected');
-            } else {
-                button.classList.remove('selected');
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
             }
-        });
-    }
-
-    function checkAnswer(correctAnswer, explanation) {
-        const isCorrect = Array.isArray(correctAnswer) ?
-            correctAnswer.sort().join(',') === selectedOptions.sort().join(',') :
-            selectedOptions.includes(correctAnswer);
-
-        const question = currentQuizQuestions[currentQuestionIndex];
-
-        if (isCorrect) {
-            correctAnswersCount++;
-            document.getElementById('feedbackText').innerHTML = "CORRETO!";
-            document.getElementById('answerExplanation').className = 'answer-container correct';
-            correctQuestions.push(question);
-        } else {
-            document.getElementById('feedbackText').innerHTML = "INCORRETO!";
-            document.getElementById('answerExplanation').className = 'answer-container incorrect';
-            incorrectQuestions.push(question);
+            return array;
         }
-        document.getElementById('correctAnswerText').innerHTML = `A resposta correta é: ${Array.isArray(correctAnswer) ? correctAnswer.join(', ') : correctAnswer}<br>${explanation}`;
-        document.getElementById('answerScreen').classList.remove('hidden');
-        document.getElementById('confirmButton').style.display = 'none';
 
-        currentQuestionIndex++;
-
-        updateProgress();
-    }
-
-    function loadNextQuestion() {
-        if (currentQuestionIndex < currentQuizQuestions.length) {
-            loadQuestion(currentQuestionIndex);
-        } else {
-            endQuiz();
-        }
-    }
-
-    function loadPreviousQuestion() {
-        if (currentQuestionIndex > 0) {
-            currentQuestionIndex--;
-            loadQuestion(currentQuestionIndex);
-        }
-    }
-
-    function updateProgress() {
-        const progressPercent = Math.round((correctAnswersCount / currentQuizQuestions.length) * 100);
-        document.getElementById('progressBar').style.width = progressPercent + "%";
-        document.getElementById('progressText').innerText = `${progressPercent}% de acertos - Questão ${currentQuestionIndex + 1}/${currentQuizQuestions.length}`;
-    }
-
-    function startTimer() {
-        timer = setInterval(updateTimer, 1000);
-    }
-
-    function updateTimer() {
-        const minutes = Math.floor(timeLeft / 60);
-        const seconds = timeLeft % 60;
-        const formattedTime = `${padZero(minutes)}:${padZero(seconds)}`;
-
-        document.getElementById("timeLeft").textContent = formattedTime;
-
-        if (timeLeft === 0) {
+        function startQuiz(numberOfQuestions, duration) {
             clearInterval(timer);
-            endQuiz();
+            document.getElementById('startScreen').classList.add('hidden');
+            document.getElementById('quizContainer').classList.remove('hidden');
+            const shuffledQuestions = shuffleArray([...questions]);
+            currentQuizQuestions = shuffledQuestions.slice(0, numberOfQuestions);
+            timeLeft = duration * 60; 
+            loadQuestion(currentQuestionIndex);
+            startTimer();
         }
 
-        timeLeft--;
-    }
+        function loadQuestion(questionIndex) {
+            const question = currentQuizQuestions[questionIndex];
+            selectedOptions = [];
+            document.getElementById('questionText').innerHTML = question.question;
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+            question.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.classList.add('option');
+                button.innerHTML = option;
+                button.onclick = () => toggleOption(option);
+                optionsContainer.appendChild(button);
+            });
+            const confirmButton = document.createElement('button');
+            confirmButton.innerHTML = 'CONFIRMAR';
+            confirmButton.onclick = () => {
+                checkAnswer(question.correctAnswer, question.explanation);
+            };
+            confirmButton.classList.add('next-question-btn');
+            confirmButton.setAttribute('id', 'confirmButton');
+            optionsContainer.appendChild(confirmButton);
+            document.getElementById('answerScreen').classList.add('hidden');
+            document.getElementById('previousQuestionBtn').style.display = (questionIndex === 0) ? 'none' : 'inline-block';
+            updateProgress();
+        }
 
-    function padZero(number) {
-        return number < 10 ? "0" + number : number;
-    }
+        function toggleOption(option) {
+            const optionIndex = selectedOptions.indexOf(option);
+            if (optionIndex < 0) {
+                selectedOptions.push(option);
+            } else {
+                selectedOptions.splice(optionIndex, 1);
+            }
+            updateOptionButtons();
+            document.getElementById('confirmButton').style.display = selectedOptions.length > 0 ? 'block' : 'none';
+        }
 
-    function endQuiz() {
-        clearInterval(timer);
-        document.getElementById('quizContainer').classList.add('hidden');
-        document.getElementById('finalScreen').classList.remove('hidden');
-        showFinalMessage();
-    }
+        function updateOptionButtons() {
+            document.querySelectorAll('.option').forEach(button => {
+                if (selectedOptions.includes(button.innerText)) {
+                    button.classList.add('selected');
+                } else {
+                    button.classList.remove('selected');
+                }
+            });
+        }
 
-    function showFinalMessage() {
+        function checkAnswer(correctAnswer, explanation) {
+            const isCorrect = Array.isArray(correctAnswer) ?
+                correctAnswer.sort().join(',') === selectedOptions.sort().join(',') :
+                selectedOptions.includes(correctAnswer);
+
+            const question = currentQuizQuestions[currentQuestionIndex];
+
+            if (isCorrect) {
+                correctAnswersCount++;
+                document.getElementById('feedbackText').innerHTML = "CORRETO!";
+                document.getElementById('answerExplanation').className = 'answer-container correct';
+                correctQuestions.push(question);
+            } else {
+                document.getElementById('feedbackText').innerHTML = "INCORRETO!";
+                document.getElementById('answerExplanation').className = 'answer-container incorrect';
+                incorrectQuestions.push(question);
+            }
+            document.getElementById('correctAnswerText').innerHTML = `A resposta correta é: ${Array.isArray(correctAnswer) ? correctAnswer.join(', ') : correctAnswer}<br>${explanation}`;
+            document.getElementById('answerScreen').classList.remove('hidden');
+            document.getElementById('confirmButton').style.display = 'none';
+
+            currentQuestionIndex++;
+
+            updateProgress();
+        }
+
+        function loadNextQuestion() {
+            if (currentQuestionIndex < currentQuizQuestions.length) {
+                loadQuestion(currentQuestionIndex);
+            } else {
+                endQuiz();
+            }
+        }
+
+        function loadPreviousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion(currentQuestionIndex);
+            }
+        }
+
+        function updateProgress() {
+            const progressPercent = Math.round((correctAnswersCount / currentQuizQuestions.length) * 100);
+            document.getElementById('progressBar').style.width = progressPercent + "%";
+            document.getElementById('progressText').innerText = `${progressPercent}% de acertos - Questão ${currentQuestionIndex + 1}/${currentQuizQuestions.length}`;
+        }
+
+        function startTimer() {
+            timer = setInterval(updateTimer, 1000);
+        }
+
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            const formattedTime = `${padZero(minutes)}:${padZero(seconds)}`;
+
+            document.getElementById("timeLeft").textContent = formattedTime;
+
+            if (timeLeft === 0) {
+                clearInterval(timer);
+                endQuiz();
+            }
+
+            timeLeft--;
+        }
+
+        function padZero(number) {
+            return number < 10 ? "0" + number : number;
+        }
+
+        function endQuiz() {
+            clearInterval(timer);
+            document.getElementById('quizContainer').classList.add('hidden');
+document.getElementById('finalScreen').classList.remove('hidden');
+showFinalMessage();
+}
+function showFinalMessage() {
         const finalScore = document.getElementById('finalScore');
         const percentage = (correctAnswersCount / currentQuizQuestions.length) * 100;
         finalScore.textContent = `Sua pontuação final é: ${percentage.toFixed(2)}%`;
@@ -2875,17 +2883,39 @@ multiSelect: false
             correctQuestions.forEach(question => {
                 const questionDiv = document.createElement('div');
                 questionDiv.innerHTML = `
-                    <h3>Pergunta: ${question.question}</h3><p><strong>Opções:</strong></p> <ul> ${question.options.map(option => `<li>${option}</li>`).join('')} </ul> <p><strong>Resposta correta:</strong> ${question.correctAnswer}</p> <p><strong>Explicação:</strong> ${question.explanation}</p> `; questionDetails.appendChild(questionDiv); }); } }
-function restartQuiz() {
-currentQuestionIndex = 0;
-correctAnswersCount = 0;
-timeLeft = 0;
-incorrectQuestions = [];
-correctQuestions = [];
-document.getElementById('finalScreen').classList.add('hidden');
-document.getElementById('startScreen').classList.remove('hidden');
-document.getElementById('questionDetails').innerHTML = '';
-}
-</script>
+                    <h3>Pergunta: ${question.question}</h3>
+                    <p><strong>Opções:</strong></p>
+                    <ul>
+                        ${question.options.map(option => `<li>${option}</li>`).join('')}
+                    </ul>
+                    <p><strong>Resposta correta:</strong> ${question.correctAnswer}</p>
+                    <p><strong>Explicação:</strong> ${question.explanation}</p>
+                `;
+                questionDetails.appendChild(questionDiv);
+            });
+        }
+    }
 
-</body> </html>
+    function restartQuiz() {
+        currentQuestionIndex = 0;
+        correctAnswersCount = 0;
+        timeLeft = 0;
+        incorrectQuestions = [];
+        correctQuestions = [];
+        document.getElementById('finalScreen').classList.add('hidden');
+        document.getElementById('startScreen').classList.remove('hidden');
+        document.getElementById('questionDetails').innerHTML = '';
+    }
+
+    function restartQuizFromQuiz() {
+        currentQuestionIndex = 0;
+        correctAnswersCount = 0;
+        timeLeft = 0;
+        incorrectQuestions = [];
+        correctQuestions = [];
+        document.getElementById('quizContainer').classList.add('hidden');
+        document.getElementById('startScreen').classList.remove('hidden');
+        document.getElementById('questionDetails').innerHTML = '';
+    }
+</script>
+</body> </html> 
