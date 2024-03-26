@@ -34,7 +34,7 @@ A aplicação é totalmente baseada na web e pode ser acessada através de qualq
 
 ## Contribuindo
 
-Esse é um trabalho um trabalho em andamento. Sugestões de melhorias, correções de bugs e outras contribuições são sempre bem-vindas! 
+Esse é um trabalho em andamento. Sugestões de melhorias, correções de bugs e outras contribuições são sempre bem-vindas! 
 
 ## Contato
 
