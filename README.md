@@ -1,4 +1,4 @@
-# SIMULADO CLF-C02 PARA AWS CLOUD PRACTITIONER v.4.0
+# SIMULADO AWS CLOUD PRACTITIONER CLF-C02 
 
 Este repositório contém uma aplicação web interativa desenvolvida para ajudar na preparação para o exame AWS Cloud Practitioner (CLF-C02). A aplicação oferece um ambiente de simulado onde os usuários podem praticar e testar seus conhecimentos sobre os serviços e conceitos da AWS.
 
